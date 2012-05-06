@@ -57,7 +57,13 @@ fun! SetupVAM() " {{{1
   "   1. DrawIt
   call vam#ActivateAddons( [ 'DrawIt' ]   , {'auto_install':0})
   " 2}}}
-  "
+
+  "  V. Color  {{{2
+  "   1. DrawIt
+  call vam#ActivateAddons( [  'Color_Sampler_Pack',
+        \ 'Color_Scheme_Explorer' ]   , {'auto_install':0})
+  " 2}}}
+
   " catch /.*/
   "  echoe v:exception
   " endtry

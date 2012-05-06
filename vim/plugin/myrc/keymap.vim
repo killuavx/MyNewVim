@@ -10,7 +10,7 @@ imap <C-f> <C-Right>
 imap <C-b> <C-Left>
 imap <C-a> <Home>
 imap <C-e> <End>
-" 
+
 map <C-a> <Home>
 map <C-e> <End>
 
@@ -27,7 +27,8 @@ imap <C-d> <Del>
 noremap <C-p> <C-PageUp>
 noremap <C-n> <C-PageDown>
 
-map  ;; <ESC>
+map ;; <ESC>
+imap ,, <ESC>:w<CR>
 map ,, <ESC>:w<CR>
 
 nmap <Tab> v>
