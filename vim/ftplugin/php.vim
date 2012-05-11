@@ -6,7 +6,7 @@ function! CheckSyntaxPHP()
     setlocal errorformat=%m\ in\ %f\ on\ line\ %l 
     make %
 endfunction
-map <F4> :call CheckSyntaxPHP()<CR>
+map <silent> <F4> :call CheckSyntaxPHP()<CR>
 " Perform :PHP_CheckSyntax() "}}}
 
 let php_folding=1
@@ -19,6 +19,7 @@ let g:debuggerPort = 9001
 set dictionary=~/.vim/ftplugin/php/doc
 set complete+=k~/.vim/ftplugin/php/doc "add dictionary complete
 set runtimepath+=~/.vim/ftplugin/php/doc
+set runtimepath+=~/.vim/ftplugin/php/
 autocmd BufNewFile,Bufread *.php set keywordprg="help"
 
 

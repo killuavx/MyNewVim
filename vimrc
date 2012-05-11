@@ -1,6 +1,5 @@
 fun! SetupVAM() " {{{1
-  set runtimepath+=~/vim-addons/vim-addon-manager
-  " commenting try .. endtry because trace is lost if you use it.
+  set runtimepath+=~/vim-addons/vim-addon-manager " commenting try .. endtry because trace is lost if you use it.
   " There should be no exception anyway
   " try
   " pluginA could be github:YourName see vam#install#RewriteName()
@@ -13,12 +12,15 @@ fun! SetupVAM() " {{{1
   "   5. sinpmate, 
   "      sinpmate-snippets, snippets rules
   "   6. MultiColor Mark
+  "   7. surround
   call vam#ActivateAddons( [ 'VisIncr' , 
         \ 'Align%294'          , 
         \ 'The_NERD_Commenter' , 
         \ 'DoxygenToolkit'     , 
         \ 'snipmate' ,  'snipmate-snippets' ,
-        \ 'Mark%1238' ] , {'auto_install':0})
+        \ 'Mark%2666',
+        \ 'surround' ,
+        \ 'vim-refact' ] , {'auto_install':0})
   " }}}
 
   " II. View Window OR Exploder {{{2
@@ -26,15 +28,17 @@ fun! SetupVAM() " {{{1
   "   2. taglist
   "   3. TaskList TODO list
   "   4. Marks Browser
-  "   5. ConqueTerm
-  "   6. WinManager
+  "   5. WinManager
+  "   6. ConqueTerm
+  "   7. calendar%52
   call vam#ActivateAddons( [ 'The_NERD_tree', 
         \ 'taglist', 
         \ 'TaskList'      , 
         \ 'bufexplorer.zip'    , 
         \ 'Marks_Browser' , 
         \ 'winmanager%1440', 
-        \ 'Conque_Shell' ]   , {'auto_install':0})
+        \ 'Conque_Shell' ,
+        \ 'calendar%52' ]   , {'auto_install':0})
   " }}}
 
   " III. Navigate {{{2
@@ -48,7 +52,7 @@ fun! SetupVAM() " {{{1
         \ 'cscope_macros' ]    , {'auto_install' : 0})
   " }}}
 
-  "  III. syntax plugin"{{{2
+  "  III. Syntax Plugin"{{{2
   "   1. assistant function prototype tips
   call vam#ActivateAddons( [ 'assistant'   ]   , {'auto_install':0})
   " 2}}}
@@ -59,7 +63,8 @@ fun! SetupVAM() " {{{1
   " 2}}}
 
   "  V. Color  {{{2
-  "   1. DrawIt
+  "   1. Color_Sampler_Pack: Many Color
+  "   2. Color_Scheme_Explorer: Color Scheme Explorer
   call vam#ActivateAddons( [  'Color_Sampler_Pack',
         \ 'Color_Scheme_Explorer' ]   , {'auto_install':0})
   " 2}}}
@@ -78,3 +83,4 @@ call SetupVAM()
 
 " vim:set fdm=marker ft=vim sw=2 sts=2 et:
 
+au GUIEnter * :NERDTreeFromBookmark log

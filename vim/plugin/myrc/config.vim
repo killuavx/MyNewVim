@@ -17,15 +17,15 @@ set nowrap " 不自动换行
 " 设置超过120字符自动换行
 "set textwidth=120
 "设置超过100列的字符带下划线 "
-au BufWinEnter * let w:m2=matchadd('Underlined', '\%>120v.\+', -1)
+"au BufWinEnter * let w:m2=matchadd('Underlined', '\%>80v.\+', -1)
 "syn match out80 /\%80v./ containedin=ALL
 "hi out80 guifg=white guibg=red
 " 显示尾行空格
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
-set listchars=tab:\|\ ,trail:~,extends:>,precedes:<
+set listchars=tab:\|\ ,trail:-,extends:>,precedes:<
 "显示尾行标示
-set list
+"set list
 
 set nobackup
 set nowritebackup
@@ -45,7 +45,7 @@ map <F4> :emenu <C-Z>
 "au GUIEnter * simalt ~x "最大化窗口
 "au GUIEnter * colo wombat "设置GUI下的颜色主题
 "au GUIEnter * colo molkai
-au GUIEnter * colo lucius
+"au GUIEnter * colo lucius
 "au GUIEnter * colo Tomorrow-Night
 "au GUIEnter * colo Mustang_Vim_Colorscheme_by_hcalves
 "au GUIEnter * colo wombat
@@ -54,25 +54,12 @@ au GUIEnter * colo lucius
 "au GUIEnter * colo tir_black
 "au GUIEnter * colo lucius
 "au GUIEnter * colo xoria256
-fun! ColoSelect()
-  call complete( col('.'), [ 'wombat' ,
-  \'molkai'             ,
-  \'Tomorrow-Night'     ,
-  \'Mustang_Vim_Colorscheme_by_hcalves',
-  \'wombat'            ,
-  \'jellybeans'        ,
-  \'desertEx'          ,
-  \'tir_black'         ,
-  \'lucius'            ,
-  \'xoria256'])
-  return ''
-endf
-map <F2> <C-R>=ColoSelect()<CR>
-
+au GUIEnter * colo molokai
+set guioptions= "去除vim的GUI版本中的toolbar
 "}}}
 
 " Config: Edit {{{1
-set spell         " 评写检查
+"set spell         " 评写检查
 set cindent       " c缩进
 set autoindent    " 设置自动缩进
 set tabstop=2     " 空格数量为4
@@ -194,7 +181,18 @@ set guitablabel=%{ShortTabLabel()}
 
 "Session settings
 "set sessionoptions=resize,winpos,winsize,buffers,tabpages,folds,curdir,help
-set guioptions-=T "去除vim的GUI版本中的toolbar
+"set guioptions-=T "去除vim的GUI版本中的toolbar
 
 "autocmd BufLeave *.* silent mkview
 "autocmd BufEnter *.* silent loadview
+"
+" Config: Marks {{{ 1
+hi MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=#8CCBEA    guifg=White
+hi MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#A4E57E    guifg=White
+hi MarkWord3  ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=White
+hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=White
+hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=White
+hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=White
+"}}}
+"
+" vim:set ft=vim:fdm=marker:tw=78:ts=2:sw=2:expandtab:ft=help:norl:foldclose=1

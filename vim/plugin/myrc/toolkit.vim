@@ -60,3 +60,32 @@ endif
 "}}}
 "
 "
+ 
+func! GetVisual() " 获取可视模式下选择的文本 {{{
+	let firstcol= col("'<")
+	let lastcol= col("'>")
+	let firstline = line("'<")
+	let lastline = line("'>")
+	let str = ''
+	if firstline == lastline 
+		let ll  = getline(firstline)
+		let str = strpart(ll,firstcol-1,lastcol-firstcol)
+	else
+		let lcount = firstline+1
+		let lines = []
+		let ll  = strpart(getline(firstline),firstcol-1)
+		call add(lines,ll)
+		while lcount < lastline
+			let ll = getline(lcount)
+			call add(lines,ll)
+			let lcount += 1
+		endw
+		let ll = strpart(getline(lcount),0,lastcol-1)
+		call add(lines,ll)
+		let str = join(lines,"\n")
+	endif
+	return str
+endfunc
+"}}}
+ 
+" vim:set ft=vim fdm=marker 

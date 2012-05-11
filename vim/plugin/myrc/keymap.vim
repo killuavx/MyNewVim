@@ -38,3 +38,5 @@ vmap <Tab> >gv
 vmap <S-Tab> <gv
 
 imap {<CR> {<CR>}<Up><End><CR>
+
+" vim:set ft=vim fdm=marker 
