@@ -1,9 +1,17 @@
 
 " insert mode hjkl
-imap <C-h> <Left>
-imap <C-j> <Down>
-imap <C-k> <Up>
-imap <C-l> <Right>
+"imap <C-h> <Left>
+"imap <C-j> <Down>
+"imap <C-k> <Up>
+"imap <C-l> <Right>
+
+imap <M-h> <Left>
+imap <M-j> <Down>
+imap <M-k> <Up>
+imap <M-l> <Right>
+
+imap <M-o> <Esc>o
+imap <M-O> <Esc>O
 
 " insert mode word cursor move
 imap <C-f> <C-Right>
@@ -27,7 +35,7 @@ imap <C-d> <Del>
 noremap <C-p> <C-PageUp>
 noremap <C-n> <C-PageDown>
 
-map ;; <ESC>
+imap ;; <ESC>
 imap ,, <ESC>:w<CR>
 map ,, <ESC>:w<CR>
 
@@ -39,4 +47,5 @@ vmap <S-Tab> <gv
 
 imap {<CR> {<CR>}<Up><End><CR>
 
+imap <C-s> <C-o>^
 " vim:set ft=vim fdm=marker 

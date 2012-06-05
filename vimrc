@@ -13,6 +13,7 @@ fun! SetupVAM() " {{{1
   "      sinpmate-snippets, snippets rules
   "   6. MultiColor Mark
   "   7. surround
+  "   8. Indent_Guides
   call vam#ActivateAddons( [ 'VisIncr' , 
         \ 'Align%294'          , 
         \ 'The_NERD_Commenter' , 
@@ -20,6 +21,7 @@ fun! SetupVAM() " {{{1
         \ 'snipmate' ,  'snipmate-snippets' ,
         \ 'Mark%2666',
         \ 'surround' ,
+        \ 'Indent_Guides' ,
         \ 'vim-refact' ] , {'auto_install':0})
   " }}}
 
@@ -80,7 +82,7 @@ call SetupVAM()
 " option1:  au VimEnter * call SetupVAM()
 " option2:  au GUIEnter * call SetupVAM()
 " See BUGS sections below [*]
+"
+set cscopequickfix=s-,c-,d-,i-,t-,e-
 
-" vim:set fdm=marker ft=vim sw=2 sts=2 et:
-
-au GUIEnter * :NERDTreeFromBookmark log
+" vim:fdm=marker:ft=vim:sw=2:sts=2:et

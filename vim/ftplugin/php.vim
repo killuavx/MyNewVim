@@ -10,11 +10,13 @@ map <silent> <F4> :call CheckSyntaxPHP()<CR>
 " Perform :PHP_CheckSyntax() "}}}
 
 let php_folding=1
-call vam#ActivateAddons( [ 'XDebug_DBGp_client_for_PHP' ]   , {'auto_install':0})
-let g:debuggerMiniBufExpl = 1
+"let g:debuggerMiniBufExpl = 1
 let g:debuggerMaxDepth = 10
 let g:debuggerMaxChildren = 64
 let g:debuggerPort = 9001
+call vam#ActivateAddons( [ 'XDebug_DBGp_client_for_PHP' , 
+                           \ 'PHPUnit_QF' ]   , {'auto_install':0})
+"call vam#ActivateAddons( [ 'debugger.py' ]   , {'auto_install':0})
 
 set dictionary=~/.vim/ftplugin/php/doc
 set complete+=k~/.vim/ftplugin/php/doc "add dictionary complete

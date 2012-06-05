@@ -9,6 +9,7 @@ filetype plugin indent on
 language C
 set guifont=Monaco\ 9
 set magic
+set nocp
 
 " 在终端和gui下使用鼠标
 set mouse=a
@@ -23,7 +24,8 @@ set nowrap " 不自动换行
 " 显示尾行空格
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
-set listchars=tab:\|\ ,trail:-,extends:>,precedes:<
+"set listchars=tab:\|\ ,trail:-,extends:>,precedes:<
+set listchars=extends:>,precedes:<
 "显示尾行标示
 "set list
 
@@ -63,7 +65,7 @@ set guioptions= "去除vim的GUI版本中的toolbar
 set cindent       " c缩进
 set autoindent    " 设置自动缩进
 set tabstop=2     " 空格数量为4
-set shiftwidth=2  " 自动缩进为4
+set shiftwidth=3  " 自动缩进为4
 set softtabstop=2 " 退格删除2空格
 set expandtab     " 使用空格代替Tab
 set smartindent   " 智能对齐方式
@@ -133,11 +135,22 @@ hi ShowMarksHLu ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 " }}}
 
 " Config: FuzzyFinder {{{1
-nnoremap <leader>ff :FufFile<CR>
-nnoremap <leader>fb :FufBuffer<CR>
-nnoremap <leader>fd :FufDir<CR>
-nnoremap <leader>ft :FufTag<CR>
-nnoremap <leader>fr :FufFileRecursive<CR>
+nnoremap   <leader>fb    :FufBuffer<CR>
+nnoremap   <leader>ff    :FufFile<CR>
+nnoremap   <leader>fcf   :FufCoverageFile<CR>
+nnoremap   <leader>fd    :FufDir<CR>
+nnoremap   <leader>fmf   :FufMruFile<CR>
+nnoremap   <leader>fmc   :FufMruCmd<CR>
+nnoremap   <leader>fbf   :FufBookmarkFile<CR>
+nnoremap   <leader>fbd   :FufBookmarkDir<CR>
+nnoremap   <leader>ft    :FufTag<CR>
+nnoremap   <leader>fbt   :FufBufferTag<CR>
+nnoremap   <leader>ftf   :FufTaggedFile<CR>
+nnoremap   <leader>fj    :FufJumpList<CR>
+nnoremap   <leader>fcl   :FufChangeList<CR>
+nnoremap   <leader>fq    :FufQuickfix<CR>
+nnoremap   <leader>fl    :FufLine<CR>
+nnoremap   <leader>fh    :FufHelp<CR>
 "}}}
 
 " Config: winManager setting {{{1
@@ -170,6 +183,15 @@ let NERDTreeShowLineNumbers=1
 "au VimEnter *  NERDTree                           " 自动打开 NERDTree
 " }}}
 
+" Config: Indent Guides {{{1
+"let g:indent_guides_auto_colors = 0
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_start_level =2
+let g:indent_guides_guide_size = 1
+"hi IndentGuidesOdd  guibg=red   ctermbg=3
+"hi IndentGuidesEven guibg=green ctermbg=4 
+"}}}
+
 function! ShortTabLabel () " 标签页只显示文件名 {{{1
   let bufnrlist = tabpagebuflist (v:lnum)
   let label = bufname (bufnrlist[tabpagewinnr (v:lnum) -1])
@@ -194,5 +216,6 @@ hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=White
 hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=White
 hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=White
 "}}}
-"
-" vim:set ft=vim:fdm=marker:tw=78:ts=2:sw=2:expandtab:ft=help:norl:foldclose=1
+
+
+"vim:ft=vim:fdm=marker:tw=78:ts=2:sw=2:expandtab:norl:foldclose=all

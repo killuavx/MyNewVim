@@ -1,7 +1,6 @@
-map <leader>at :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
-fu! ReferenceLine(t) " [移动参考线] {{{1
-  let ccnum = &cc
+fu! ReferenceLine(t) " [移动参考线] {{{1 
+	let ccnum = &cc
   if ccnum == '' | let ccnum = 0 | en
   let csw = &sw
   if a:t == 'add'
@@ -58,8 +57,6 @@ if !exists(":DiffOrig")
         \ | wincmd p | diffthis
 endif
 "}}}
-"
-"
  
 func! GetVisual() " 获取可视模式下选择的文本 {{{
 	let firstcol= col("'<")
@@ -87,5 +84,63 @@ func! GetVisual() " 获取可视模式下选择的文本 {{{
 	return str
 endfunc
 "}}}
- 
-" vim:set ft=vim fdm=marker 
+
+
+" 启用cscope {{{1
+fun! DoCsTag( prepath )
+
+	 if ( !filereadable( a:prepath . '/cscope.out') )
+			silent! execute "!find " . a:prepath . "/ -name '*.php' -type f > " . a:prepath . "/cscope.files"
+   endif
+
+	 if ( executable('cscope') && has('cscope') && !filereadable(a:prepath ."/cscope.out") )
+      silent! execute "!cscope -bkq -i " . a:prepath . "/cscope.files -f " . a:prepath . "/cscope.out"
+	 endif
+	 if ( filereadable( a:prepath . '/cscope.out') )
+			execute "cs add ".  a:prepath . "/cscope.out " . a:prepath
+	 endif
+endf
+command! -nargs=1 DoCsTag :call DoCsTag(<f-args>)
+"}}}
+"
+map <leader>at :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+
+" 启用tag {{{1
+fun! DoTag( prepath )
+   let p = expand('pwd')
+   silent! execute "cd " . a:prepath
+	 if ( !filereadable( a:prepath . '/tags') )
+			silent! execute "!ctags -R --c++-kinds=+px --fields=+iaS --extra=+q " . a:prepath . "/" 
+   endif
+   execute "set tags+=" . a:prepath . "/tags"
+   silent! execute "cd " . p
+endf
+"}}}
+command! -nargs=1 DoTag :call DoTag(<f-args>)
+
+" Project Config: ctag,cscope {{{
+"}}}
+"
+"" Calendar diaryVGC {{{1
+"fun! DoDiaryVGC( user , pwd )
+"   if !exists("g:diaryvgc_bin_exec")  
+"      let g:diaryvgc_bin_exec='~/codeware/DiaryVGC_1.4/diaryvgc.py' 
+"   endif
+"   if ( !filereadable( g:diaryvgc_bin_exec ) || !executable( g:diaryvgc_bin_exec ) ) 
+"      return 
+"   endif
+"   if !exists("g:diaryvgc_log_path") 
+"      let g:diaryvgc_log_path='~/diary' 
+"   endif
+"   execute "!" . g:diaryvgc_bin_exec . " -d=" . g:diaryvgc_log_path . " -u=" . a:user . " -p=" . a:pwd
+"endf
+"command! -nargs=2 DoDiaryVGC :call DoDiaryVGC(<f-args>)
+"}}}
+
+let g:myproject_path      = ''
+let g:myproject_test_path = ''
+let g:phpunit_args        = '--bootstrap ' . g:myproject_path . g:myproject_test_path . 'bootstrap.php'
+let g:phpunit_args        = g:phpunit_args .' --configuration ' . g:myproject_path . g:myproject_test_path . 'phpunit.xml'
+let g:phpunit_args        = g:phpunit_args .' --syntax-check'
+
+" vim:ft=vim:fdm=marker:set foldenable:foldclose=all
