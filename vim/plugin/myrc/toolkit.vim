@@ -1,18 +1,18 @@
 
 fu! ReferenceLine(t) " [移动参考线] {{{1 
-	let ccnum = &cc
-  if ccnum == '' | let ccnum = 0 | en
-  let csw = &sw
-  if a:t == 'add'
-    let ccnum = ccnum + csw
-    exec "setl cc=".ccnum
-  elsei a:t == 'cut'
-    let ccnum = ccnum - csw
-    exec "setl cc=".ccnum
-  elsei a:t == 'subtract'
-    let ccnum = ccnum - csw
-    if ccnum >= 0 | exec "setl cc=".ccnum | en
-  en
+   let ccnum = &cc
+   if ccnum == '' | let ccnum = 0 | en
+   let csw = &sw
+   if a:t == 'add'
+      let ccnum = ccnum + csw
+      exec "setl cc=".ccnum
+   elsei a:t == 'cut'
+      let ccnum = ccnum - csw
+      exec "setl cc=".ccnum
+   elsei a:t == 'subtract'
+      let ccnum = ccnum - csw
+      if ccnum >= 0 | exec "setl cc=".ccnum | en
+   en
 endf
 nn <silent> <C-q> :call ReferenceLine('subtract')<CR>
 nn <silent> <C-o> :call ReferenceLine('add')<CR>
@@ -59,46 +59,47 @@ endif
 "}}}
  
 func! GetVisual() " 获取可视模式下选择的文本 {{{
-	let firstcol= col("'<")
-	let lastcol= col("'>")
-	let firstline = line("'<")
-	let lastline = line("'>")
-	let str = ''
-	if firstline == lastline 
-		let ll  = getline(firstline)
-		let str = strpart(ll,firstcol-1,lastcol-firstcol)
-	else
-		let lcount = firstline+1
-		let lines = []
-		let ll  = strpart(getline(firstline),firstcol-1)
-		call add(lines,ll)
-		while lcount < lastline
-			let ll = getline(lcount)
-			call add(lines,ll)
-			let lcount += 1
-		endw
-		let ll = strpart(getline(lcount),0,lastcol-1)
-		call add(lines,ll)
-		let str = join(lines,"\n")
-	endif
-	return str
+   Type Call requires API level 8 (current min is 7): android.net.http.AndroidHttpClientlet firstcol= col("'<")
+   let lastcol= col("'>")
+   let firstline = line("'<")
+   let lastline = line("'>")
+   let str = ''
+   if firstline == lastline 
+      let ll  = getline(firstline)
+      let str = strpart(ll,firstcol-1,lastcol-firstcol)
+   else
+      let lcount = firstline+1
+      let lines = []
+      let ll  = strpart(getline(firstline),firstcol-1)
+      call add(lines,ll)
+      while lcount < lastline
+         let ll = getline(lcount)
+         call add(lines,ll)
+         let lcount += 1
+      endw
+      let ll = strpart(getline(lcount),0,lastcol-1)
+      call add(lines,ll)
+      let str = join(lines,"\n")
+   endif
+   return str
 endfunc
 "}}}
 
 
+"let g:fuf_buffertag_ctagsPath = '/usr/local/share/nginx/www/yii/framework/tags'
 " 启用cscope {{{1
 fun! DoCsTag( prepath )
 
-	 if ( !filereadable( a:prepath . '/cscope.out') )
-			silent! execute "!find " . a:prepath . "/ -name '*.php' -type f > " . a:prepath . "/cscope.files"
+   if ( !filereadable( a:prepath . '/cscope.out') )
+      silent! execute "!find " . a:prepath . "/ -name '*.php' -type f > " . a:prepath . "/cscope.files"
    endif
 
-	 if ( executable('cscope') && has('cscope') && !filereadable(a:prepath ."/cscope.out") )
+   if ( executable('cscope') && has('cscope') && !filereadable(a:prepath ."/cscope.out") )
       silent! execute "!cscope -bkq -i " . a:prepath . "/cscope.files -f " . a:prepath . "/cscope.out"
-	 endif
-	 if ( filereadable( a:prepath . '/cscope.out') )
-			execute "cs add ".  a:prepath . "/cscope.out " . a:prepath
-	 endif
+   endif
+   if ( filereadable( a:prepath . '/cscope.out') )
+      execute "cs add ".  a:prepath . "/cscope.out " . a:prepath
+   endif
 endf
 command! -nargs=1 DoCsTag :call DoCsTag(<f-args>)
 "}}}
@@ -109,8 +110,8 @@ map <leader>at :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 fun! DoTag( prepath )
    let p = expand('pwd')
    silent! execute "cd " . a:prepath
-	 if ( !filereadable( a:prepath . '/tags') )
-			silent! execute "!ctags -R --c++-kinds=+px --fields=+iaS --extra=+q " . a:prepath . "/" 
+   if ( !filereadable( a:prepath . '/tags') )
+      silent! execute "!ctags -R --c++-kinds=+px --fields=+iaS --extra=+q " . a:prepath . "/" 
    endif
    execute "set tags+=" . a:prepath . "/tags"
    silent! execute "cd " . p
@@ -119,6 +120,23 @@ endf
 command! -nargs=1 DoTag :call DoTag(<f-args>)
 
 " Project Config: ctag,cscope {{{
+"let g:cs_path_yii    = '/var/www/yii/framework'
+"let g:cs_path_log    = '/var/www/log'
+"let g:cs_path_market = '/var/www/market2'
+"let g:cs_path_phpunit= '/usr/share/php/PHPUnit'
+"let g:cs_path_platform= '/var/www/platform'
+"call DoCsTag( g:cs_path_yii )
+"call DoCsTag( g:cs_path_log )
+"call DoCsTag( g:cs_path_market )
+"call DoCsTag( g:cs_path_phpunit )
+"call DoCsTag( g:cs_path_platform )
+"
+"set tags=
+"call DoTag( g:cs_path_market )
+"call DoTag( g:cs_path_yii )
+"call DoTag( g:cs_path_log )
+"call DoTag( g:cs_path_phpunit )
+"call DoTag( g:cs_path_platform )
 "}}}
 "
 "" Calendar diaryVGC {{{1
@@ -136,11 +154,5 @@ command! -nargs=1 DoTag :call DoTag(<f-args>)
 "endf
 "command! -nargs=2 DoDiaryVGC :call DoDiaryVGC(<f-args>)
 "}}}
-
-let g:myproject_path      = ''
-let g:myproject_test_path = ''
-let g:phpunit_args        = '--bootstrap ' . g:myproject_path . g:myproject_test_path . 'bootstrap.php'
-let g:phpunit_args        = g:phpunit_args .' --configuration ' . g:myproject_path . g:myproject_test_path . 'phpunit.xml'
-let g:phpunit_args        = g:phpunit_args .' --syntax-check'
 
 " vim:ft=vim:fdm=marker:set foldenable:foldclose=all

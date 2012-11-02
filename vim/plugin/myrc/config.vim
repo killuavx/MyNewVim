@@ -17,7 +17,7 @@ set mouse=a
 set nowrap " 不自动换行
 " 设置超过120字符自动换行
 "set textwidth=120
-"设置超过100列的字符带下划线 "
+""设置超过100列的字符带下划线 "
 "au BufWinEnter * let w:m2=matchadd('Underlined', '\%>80v.\+', -1)
 "syn match out80 /\%80v./ containedin=ALL
 "hi out80 guifg=white guibg=red
@@ -27,12 +27,18 @@ match WhitespaceEOL /\s\+$/
 "set listchars=tab:\|\ ,trail:-,extends:>,precedes:<
 set listchars=extends:>,precedes:<
 "显示尾行标示
-"set list
+set list
 
 set nobackup
 set nowritebackup
 autocmd BufEnter * cd %:p:h " 移动工作目录到当前文件所在目录
-let g:snips_author="Huang Ronghua<huangronghua@ndoo.com>"
+"autocmd BufEnter * :call SetFileFormat() " 自动设置文件格式
+"fun! SetFileFormat()
+"	let bstate = exec "set modifiable?"
+"  if bstate == "modifiable"
+"     set fileformat=unix
+"  endif
+"endf
 "}}}
 
 " Config: 菜单帮助 {{{1
@@ -57,28 +63,84 @@ map <F4> :emenu <C-Z>
 "au GUIEnter * colo lucius
 "au GUIEnter * colo xoria256
 au GUIEnter * colo molokai
+"
+" if has("gui_running")
+"   set guioptions-=T
+"   set t_Co=256
+"   set background=dark
+"   colorscheme peaksea
+"   set nonu
+" else
+"   colorscheme zellner
+"   set background=dark
+"   set nonu
+" endif
+
 set guioptions= "去除vim的GUI版本中的toolbar
 "}}}
 
 " Config: Edit {{{1
 "set spell         " 评写检查
-set cindent       " c缩进
+"set cindent       " c缩进
 set autoindent    " 设置自动缩进
 set tabstop=2     " 空格数量为4
-set shiftwidth=3  " 自动缩进为4
+set shiftwidth=2  " 自动缩进为4
 set softtabstop=2 " 退格删除2空格
 set expandtab     " 使用空格代替Tab
-set smartindent   " 智能对齐方式
+autocmd BufEnter * set expandtab
+"set smartindent   " 智能对齐方式
+set nosmartindent
+set nosmarttab
 set showmatch     " 设置匹配模式， 类似当输入一个左括号时匹配右括号
 ""}}}
 
 " Config: View {{{1
 " Add more information on status bar
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%L]
+""""""""""""""""""""""""""""""
+" => Statusline
+""""""""""""""""""""""""""""""
+" Always hide the statusline
 set laststatus=2
+
+" Powerline
+let Powerline_symbols = 'compatible'
+let g:Powerline_symbols           = 'fancy'
+"let g:Powerline_dividers_override = ['>>', '>', '<<', '<']
+
+"Git branch"{{{2
+function! GitBranch()
+    try
+        let branch = system("git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* //'")
+    catch
+        return 'NO GIT'
+    endtry
+
+    if branch != ''
+        return 'GitBranch:' . substitute(branch, '\n', '', 'g') 
+    en
+
+    return 'NO GIT'
+endfunction
+
+function! CurDir()
+    return substitute(getcwd(), '/Users/amir/', "~/", "g")
+endfunction
+
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    en
+    return ''
+endfunction
+
+" Format the statusline
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L%\ %{GitBranch()}
+" set statusline=%F%m%r%h%w\ [%{GitBranch()}]\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v]\ [%p%%]\ [LEN=%l,%L]
+"}}}
+
 set cmdheight=3 "设置命令行的高度
 set cursorline  " 行高亮
-"set cursorcolumn "列高亮，与函数列表有冲突
+set cursorcolumn "列高亮，与函数列表有冲突
 set cc=80 " 列上限参考线
 "}}}
 
@@ -115,7 +177,7 @@ set foldmethod=marker
 set encoding=UTF-8
 set termencoding=UTF-8
 language message zh_CN.utf-8 "解决终端乱码
-set fileencodings=utf-8,gbk,big5,latin1
+set fileencodings=utf-8,gbk,big5
 set fileencoding=utf-8
 set ambiwidth=double "显示中文引号
 " }}}
@@ -153,14 +215,44 @@ nnoremap   <leader>fl    :FufLine<CR>
 nnoremap   <leader>fh    :FufHelp<CR>
 "}}}
 
-" Config: winManager setting {{{1
+" Config: winManager & miniBufExpl setting {{{1
+
 let g:winManagerWidth = 30
 let g:defaultExplorer = 0
-let g:winManagerWindowLayout='TagList|BufExplorer'
-let g:miniBufExplMapCTabSwitchBufs=1
+let g:winManagerWindowLayout='TagList|BufExplorer,FileExplorer'
 nmap <C-W><C-F> :FirstExplorerWindow<CR>
 nmap <C-W><C-B> :BottomExplorerWindow<CR>
 nmap <silent> <F8> :WMToggle<CR>
+
+""""""""""""""""""""""""""""""
+" => bufExplorer plugin
+""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=1
+let g:bufExplorerShowRelativePath=1
+"let g:bufExplorerFindActive=1
+let g:bufExplorerSortBy='name'
+map <leader>o :BufExplorer<cr>
+
+
+""""""""""""""""""""""""""""""
+" => Minibuffer plugin
+""""""""""""""""""""""""""""""
+let g:miniBufExplMapWindowNavVim    = 1
+let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs  = 0
+"let g:miniBufExplModSelTarget       = 1
+"let g:miniBufExplorerMoreThanOne    = 0
+"let g:miniBufExplModSelTarget       = 0
+"let g:miniBufExplUseSingleClick     = 1
+"let g:miniBufExplMapWindowNavVim    = 1
+"let g:miniBufExplVSplit             = 20
+let g:miniBufExplSplitBelow         = 2
+
+" autocmd BufRead,BufNew :call UMiniBufExplorer
+
+map <leader>u :TMiniBufExplorer<cr>
+
+
 "}}}
 
 " Config: taglist {{{1
@@ -168,7 +260,7 @@ let g:Tlist_Show_One_File=1 "taglist plugin show local tagfile only
 "let Tlist_Use_Right_Window=1 "show right
 let g:Tlist_Exit_OnlyWindw=1
 "让当前不被编辑的文件的方法列表自动折叠起来
-let g:Tlist_File_Fold_Auto_Close=1
+let g:Tlist_File_Fold_Auto_Close=0
 "let Tlist_Auto_Open=1
 let g:Tlist_Auto_Update=1
 " }}}
@@ -177,9 +269,12 @@ let g:Tlist_Auto_Update=1
 let NERDChristmasTree           = 1             " 色彩显示
 "let NERDTreeShowHidden         = 1             " 显示隐藏文件
 let NERDTreeHighlightCursorline = 1             " 高亮当前行
-let NERDTreeShowBookmarks         = 1             " 显示bookmarks
-let NERDTreeWinPos                = 'right'       " 窗体位置
-let NERDTreeShowLineNumbers=1
+let NERDTreeShowBookmarks       = 1             " 显示bookmarks
+let NERDTreeWinPos              = 'right'       " 窗体位置
+let NERDTreeShowLineNumbers     = 1
+let NERDTreeKeepTreeInNewTab    = 1                  "
+let NERDTreeShowHidden          = 1
+nmap <F7> :NERDTreeToggle<CR>
 "au VimEnter *  NERDTree                           " 自动打开 NERDTree
 " }}}
 
@@ -201,14 +296,62 @@ endfunction
 " }}}
 set guitablabel=%{ShortTabLabel()}
 
-"Session settings
+"Session settings"{{{
+"------------Session---------------
+let g:session_directory=$HOME.'/.vim/tmp/session'
+let g:session_autoload='yes'
+let g:session_autosave='yes'
+
+" create tmp folder and the subfolders if they don't exist.
+function! InitializeDirectories()
+   let separator = "."
+   let parent = $HOME 
+   let prefix = '.vim/tmp/'
+   if !isdirectory(parent.'/'.prefix)
+      call mkdir(parent.'/'.prefix)
+   endif
+
+   let dir_list = { 
+            \ 'backup': 'backupdir', 
+            \ 'views': 'viewdir', 
+            \ 'undo' : 'undodir',
+            \ 'swap': 'directory' }
+
+   for [dirname, settingname] in items(dir_list)
+      let directory = parent . '/' . prefix . dirname . "/"
+      if exists("*mkdir")
+         if !isdirectory(directory)
+            call mkdir(directory)
+         endif
+      endif
+      if !isdirectory(directory)
+         echo "Warning: Unable to create backup directory: " . directory
+         echo "Try: mkdir -p " . directory
+      else  
+         let directory = substitute(directory, " ", "\\\\ ", "")
+         exec "set " . settingname . "=" . directory."/"
+      endif
+   endfor
+   "add session folder if it doesn't exist
+   if !isdirectory(parent.'/'.prefix.'session/')
+      call mkdir(parent.'/'.prefix.'session/')
+   endif
+endfunction
+call InitializeDirectories()
 "set sessionoptions=resize,winpos,winsize,buffers,tabpages,folds,curdir,help
 "set guioptions-=T "去除vim的GUI版本中的toolbar
 
 "autocmd BufLeave *.* silent mkview
-"autocmd BufEnter *.* silent loadview
+"autocmd BufEnter *.* silent loadview"}}}
 "
 " Config: Marks {{{ 1
+nmap <silent> ,hl <Plug>MarkSet
+vmap <silent> ,hl <Plug>MarkSet
+nmap <silent> ,hh <Plug>MarkClear
+vmap <silent> ,hh <Plug>MarkClear
+nmap <silent> ,hr <Plug>MarkRegex
+vmap <silent> ,hr <Plug>MarkRegex
+
 hi MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=#8CCBEA    guifg=White
 hi MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#A4E57E    guifg=White
 hi MarkWord3  ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=White
@@ -217,5 +360,50 @@ hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=White
 hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=White
 "}}}
 
+" Config:Syntastic {{{
 
-"vim:ft=vim:fdm=marker:tw=78:ts=2:sw=2:expandtab:norl:foldclose=all
+let g:syntastic_echo_current_error = 1
+let g:syntastic_check_on_open      = 1
+let g:syntastic_enable_signs       = 1
+let g:syntastic_error_symbol       = '✗' " - For syntax errors, defaults to '>>'
+let g:syntastic_warning_symbol     = '⚠' " - For syntax warnings, defaults to '>>'
+"let g:syntastic_style_error_symbol   =  " - For style errors, defaults to 'S>'
+"let g:syntastic_style_warning_symbol =  " - For style warnings, defaults to 'S>'
+let g:syntastic_auto_loc_list      = 0
+let g:syntastic_loc_list_height=5
+let g:syntastic_disabled_filetypes = ['html']
+let g:syntastic_stl_format         = '[%E{%e Errors}%B{, }%W{%w Warnings}]'
+let g:syntastic_phpcs_disable      = 1
+let g:syntastic_phpcs_conf         = "--tab-width=2 --standard=CodeIgniter"
+"let g:syntastic_jsl_conf = '$HOME/.vim/jsl.conf'
+
+" }}}
+"
+set grepprg=/bin/grep\ -nH
+""""""""""""""""""""""""""""""
+" => MRU plugin
+""""""""""""""""""""""""""""""
+let MRU_Max_Entries = 400
+"map <leader>f :MRU<CR>
+
+""""""""""""""""""""""""""""""
+" => Vim grep
+""""""""""""""""""""""""""""""
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+set grepprg=/bin/grep\ -nH
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Cope
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Do :help cope if you are unsure what cope is. It's super useful!
+map <leader>cc :botright cope<cr>
+map <leader>n :cn<cr>
+map <leader>p :cp<cr>
+
+set ruler "Always show current position
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+let g:phpunit_debug=1
+" vim:ft=vim:fdm=marker:tw=78:ts=2:sw=2:expandtab:norl:foldclose=all:foldlevel=0

@@ -1,7 +1,8 @@
 setl fdm=syntax | setl fen 
 
-setlocal tabstop=2 "空格数量为4
-setlocal shiftwidth=2 "自动缩进为4
+setlocal tabstop=4     " 空格数量为4
+setlocal shiftwidth=4  " 自动缩进为4
+setlocal softtabstop=4 " 退格删除2空格
 "setlocal expandtab "使用空格代替Tab
 setlocal smarttab
 
@@ -22,3 +23,15 @@ map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
 set completeopt=menuone,longest,preview
 "let g:pep8_map='whatever'
 "let g:pep8_map='<leader>8'
+
+" au FileType python setlocal omnifunc=pythoncomplete#Complete
+au FileType python setlocal define=^\s*\\(def\\\\|class\\)
+"au FileType python compiler nose
+au FileType man nnoremap <buffer> <cr> :q<cr>
+
+" Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
+" override this in a normal way, could you?
+au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
+
+" Jesus, Python.  Five characters of punctuation for a damn string?
+au FileType python inoremap <buffer> <d-'> _(u'')<left><left>

@@ -1,8 +1,10 @@
+so $HOME/.vim/plugin/myrc/user.vim
 so $HOME/.vim/plugin/myrc/toolkit.vim
 so $HOME/.vim/plugin/myrc/filesetting.vim
 
 so $HOME/.vim/plugin/myrc/config.vim
 so $HOME/.vim/plugin/myrc/keymap.vim
+so $HOME/.vim/plugin/myrc/project.vim
 
 " neocomplcache {{{
 let g:neocomplcache_enable_at_startup=1

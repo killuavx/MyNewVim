@@ -9,15 +9,25 @@ imap <M-h> <Left>
 imap <M-j> <Down>
 imap <M-k> <Up>
 imap <M-l> <Right>
+imap <M-v> <Esc>v
+imap <M-V> <Esc>V
 
 imap <M-o> <Esc>o
 imap <M-O> <Esc>O
+
+imap <M-c> <C-o>cw
+imap <M-d> <C-o>dd
+imap <M-x> <C-o>D
+
+"imap <M->> <C-o>>>
+"imap <M->> <C-o><<
 
 " insert mode word cursor move
 imap <C-f> <C-Right>
 imap <C-b> <C-Left>
 imap <C-a> <Home>
 imap <C-e> <End>
+imap <C-s> <C-o>^
 
 map <C-a> <Home>
 map <C-e> <End>
@@ -32,8 +42,9 @@ imap <C-d> <Del>
 "个数imap <C-x> <Backspace>
 "
 " tabpreview and tabnext map
-noremap <C-p> <C-PageUp>
-noremap <C-n> <C-PageDown>
+noremap <M-p> <C-PageUp>
+noremap <M-n> <C-PageDown>
+noremap <M-d> :tabc<CR>
 
 imap ;; <ESC>
 imap ,, <ESC>:w<CR>
@@ -47,5 +58,4 @@ vmap <S-Tab> <gv
 
 imap {<CR> {<CR>}<Up><End><CR>
 
-imap <C-s> <C-o>^
 " vim:set ft=vim fdm=marker 

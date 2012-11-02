@@ -8,5 +8,5 @@ autocmd BufRead,BufNewFile /etc/nginx/* set ft=nginx
 autocmd BufRead,BufNewFile *.qml set ft=qml
 
 
-autocmd BufRead,BufNewFile *.wiki set ft=wiki
-autocmd BufRead,BufNewFile *.org set ft=org
+"autocmd BufRead,BufNewFile *.wiki set ft=wiki
+"autocmd BufRead,BufNewFile *.org set ft=org
