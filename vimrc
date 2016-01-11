@@ -17,6 +17,10 @@ fun! SetupVAM() " {{{1
   "   9. mru 
   "   10. renamer 
   "   11. Indent_Guides
+  "   12 vim-multiple-cursors
+  "   13 vim-flake8
+  "   14 Coloresque
+  "   15 Yggdroot/indentLine
   call vam#ActivateAddons( [ 'VisIncr' , 
         \ 'Align%294'          , 
         \ 'The_NERD_Commenter' , 
@@ -108,3 +112,6 @@ map <Leader>hof :%!xxd -r<CR>
 "au GUIEnter * :VimwikiDiaryIndex
 "au GUIEnter * :Calendar
 " vim:fdm=marker:ft=vim:sw=2:sts=2:et
+
+" nnoremap <silent> <F10> :TagbarOpen fj<CR>
+" nnoremap <silent> <F9> :TagbarToggle<CR>
